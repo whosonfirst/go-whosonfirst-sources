@@ -6,12 +6,12 @@ Go package for working with Who's On First data sources
 
 ### Simple
 
+```
 import (
 	"github.com/whosonfirst/go-whosonfirst-sources"
        "log"
 )
 
-```
 log.Println(sources.IsValidSource("sfac"))
 log.Println(sources.IsValidSource("chairzen"))
 
