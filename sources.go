@@ -6,16 +6,27 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-sources/sources"
 )
 
-// please to be returning an actual thingy and not just an interface
+type WOFSource struct {
+	Id          int    `json:"id"`
+	Fullname    string `json:"fullname"`
+	Name        string `json:"name"`
+	Prefix      string `json:"prefix"`
+	Key         string `json:"key"`
+	URL         string `json:"url"`
+	License     string `json:"license"`
+	Description string `json:"description"`
+}
 
-func Spec() (interface{}, error) {
+type WOFSourceSpecification map[string]WOFSource
 
-	var d interface{}
-	err := json.Unmarshal([]byte(sources.Specification), &d)
+func Spec() (*WOFSourceSpecification, error) {
+
+	var spec WOFSourceSpecification
+	err := json.Unmarshal([]byte(sources.Specification), &spec)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return d, nil
+	return &spec, nil
 }
