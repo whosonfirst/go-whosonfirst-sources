@@ -25,7 +25,7 @@ if err != nil {
 
 log.Println(src.License)
 
-src, err := sources.GetSourceById(999)
+src, err = sources.GetSourceById(999)
 
 if err != nil {
    log.Fatal(err)
