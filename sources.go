@@ -2,7 +2,7 @@ package sources
 
 import (
 	"encoding/json"
-	_ "errors"
+	"errors"
 	"github.com/whosonfirst/go-whosonfirst-sources/sources"
 	"log"
 )
@@ -47,6 +47,48 @@ func Spec() (*WOFSourceSpecification, error) {
 
 func IsValidSource(source string) bool {
 
-	log.Println("Please write me")
+	for _, details := range *specification {
+
+		if details.Name == source {
+			return true
+		}
+	}
+
 	return false
+}
+
+func IsValidSourceId(source_id int) bool {
+
+	for _, details := range *specification {
+
+		if details.Id == source_id {
+			return true
+		}
+	}
+
+	return false
+}
+
+func GetSourceByName(source string) (*WOFSource, error) {
+
+	for _, details := range *specification {
+
+		if details.Name == source {
+			return &details, nil
+		}
+	}
+
+	return nil, errors.New("Invalid source")
+}
+
+func GetSourceById(source_id int) (*WOFSource, error) {
+
+	for _, details := range *specification {
+
+		if details.Id == source_id {
+			return &details, nil
+		}
+	}
+
+	return nil, errors.New("Invalid source")
 }
