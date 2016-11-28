@@ -9,4 +9,6 @@ func main() {
 
 	s, _ := sources.Spec()
 	fmt.Printf("%v\n", s)
+
+	fmt.Println(sources.IsValidSource("statscan"))
 }

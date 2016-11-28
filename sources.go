@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	_ "errors"
 	"github.com/whosonfirst/go-whosonfirst-sources/sources"
+	"log"
 )
 
 type WOFSource struct {
@@ -19,6 +20,19 @@ type WOFSource struct {
 
 type WOFSourceSpecification map[string]WOFSource
 
+var specification *WOFSourceSpecification
+
+func init() {
+
+	var err error
+
+	specification, err = Spec()
+
+	if err != nil {
+		log.Fatal("Failed to parse specification", err)
+	}
+}
+
 func Spec() (*WOFSourceSpecification, error) {
 
 	var spec WOFSourceSpecification
@@ -29,4 +43,10 @@ func Spec() (*WOFSourceSpecification, error) {
 	}
 
 	return &spec, nil
+}
+
+func IsValidSource(source string) bool {
+
+	log.Println("Please write me")
+	return false
 }
