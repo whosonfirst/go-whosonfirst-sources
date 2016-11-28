@@ -9,7 +9,7 @@ Go package for working with Who's On First data sources
 ```
 import (
 	"github.com/whosonfirst/go-whosonfirst-sources"
-       "log"
+	"log"
 )
 
 log.Println(sources.IsValidSource("sfac"))
