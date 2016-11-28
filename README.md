@@ -24,6 +24,12 @@ if err != nil {
 }
 
 log.Println(src.License)
+
+src, err := sources.GetSourceById(999)
+
+if err != nil {
+   log.Fatal(err)
+}
 ```
 
 Yields:
@@ -33,6 +39,7 @@ true
 false
 true
 CC0
+Invalid source
 ```
 
 ## See also
