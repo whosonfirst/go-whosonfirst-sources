@@ -3,8 +3,9 @@ package sources
 import (
 	"encoding/json"
 	"errors"
-	"github.com/whosonfirst/go-whosonfirst-sources/sources"
 	"log"
+
+	"github.com/whosonfirst/go-whosonfirst-sources/sources"
 )
 
 type WOFSource struct {
