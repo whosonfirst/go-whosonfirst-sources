@@ -16,10 +16,13 @@ func TestSpec(t *testing.T) {
 func TestIsValidSource(t *testing.T) {
 
 	valid := []string{
+		// by prefix
 		"m49",
 		"wof",
 		"4sq",
 		"arg-caba",
+		// by name
+		"metazen",
 	}
 
 	not_valid := []string{
@@ -28,22 +31,22 @@ func TestIsValidSource(t *testing.T) {
 		"bbq",
 	}
 
-	for _, prefix := range valid {
+	for _, label := range valid {
 
-		if !IsValidSource(prefix) {
-			t.Fatalf("Expected '%s' to be valid", prefix)
+		if !IsValidSource(label) {
+			t.Fatalf("Expected '%s' to be valid", label)
 		}
 	}
 
-	for _, prefix := range not_valid {
+	for _, label := range not_valid {
 
-		if IsValidSource(prefix) {
-			t.Fatalf("Did not expect '%s' to be valid", prefix)
+		if IsValidSource(label) {
+			t.Fatalf("Did not expect '%s' to be valid", label)
 		}
 	}
 }
 
-func TestGetSourceByName(t *testing.T) {
+func TestGetSourceByPrefix(t *testing.T) {
 
 	tests := map[string]int64{
 		"arg-caba": 1108969549,
@@ -53,14 +56,37 @@ func TestGetSourceByName(t *testing.T) {
 
 	for prefix, id := range tests {
 
-		src, err := GetSourceByName(prefix)
+		src, err := GetSourceByPrefix(prefix)
 
 		if err != nil {
-			t.Fatalf("Unable to retrieve source by name '%s', %v", prefix, err)
+			t.Fatalf("Unable to retrieve source by prefix '%s', %v", prefix, err)
 		}
 
 		if src.Id != id {
 			t.Fatalf("Unexpected ID for '%s', expected '%d' but got '%d'", prefix, id, src.Id)
+		}
+	}
+
+}
+
+func TestGetSourceByName(t *testing.T) {
+
+	tests := map[string]int64{
+		"arg-caba":   1108969549,
+		"metazen":    404734197,
+		"foursquare": 857075439,
+	}
+
+	for name, id := range tests {
+
+		src, err := GetSourceByName(name)
+
+		if err != nil {
+			t.Fatalf("Unable to retrieve source by name '%s', %v", name, err)
+		}
+
+		if src.Id != id {
+			t.Fatalf("Unexpected ID for '%s', expected '%d' but got '%d'", name, id, src.Id)
 		}
 	}
 
