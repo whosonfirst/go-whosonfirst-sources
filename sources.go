@@ -9,7 +9,7 @@ import (
 )
 
 type WOFSource struct {
-	Id          int    `json:"id"`
+	Id          int64  `json:"id"`
 	Fullname    string `json:"fullname"`
 	Name        string `json:"name"`
 	Prefix      string `json:"prefix"`
@@ -58,7 +58,7 @@ func IsValidSource(source string) bool {
 	return false
 }
 
-func IsValidSourceId(source_id int) bool {
+func IsValidSourceId(source_id int64) bool {
 
 	for _, details := range *specification {
 
@@ -82,7 +82,7 @@ func GetSourceByName(source string) (*WOFSource, error) {
 	return nil, errors.New("Invalid source")
 }
 
-func GetSourceById(source_id int) (*WOFSource, error) {
+func GetSourceById(source_id int64) (*WOFSource, error) {
 
 	for _, details := range *specification {
 
