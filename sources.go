@@ -9,7 +9,7 @@ import (
 )
 
 type WOFSource struct {
-	Id          int    `json:"id"`
+	Id          int64  `json:"id"`
 	Fullname    string `json:"fullname"`
 	Name        string `json:"name"`
 	Prefix      string `json:"prefix"`
@@ -25,40 +25,46 @@ var specification *WOFSourceSpecification
 
 func init() {
 
-	var err error
-
-	specification, err = Spec()
+	r, err := sources.FS.Open("spec.json")
 
 	if err != nil {
-		log.Fatal("Failed to parse specification", err)
+		log.Fatalf("Failed to open spec for reading, %v", err)
 	}
+
+	defer r.Close()
+
+	dec := json.NewDecoder(r)
+	err = dec.Decode(&specification)
+
+	if err != nil {
+		log.Fatalf("Failed to decode spec, %v", err)
+	}
+
 }
 
 func Spec() (*WOFSourceSpecification, error) {
 
-	var spec WOFSourceSpecification
-	err := json.Unmarshal([]byte(sources.Specification), &spec)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return &spec, nil
+	return specification, nil
 }
 
 func IsValidSource(source string) bool {
 
 	for _, details := range *specification {
 
-		if details.Name == source {
+		switch {
+		case details.Prefix == source:
 			return true
+		case details.Name == source:
+			return true
+		default:
+			// continue
 		}
 	}
 
 	return false
 }
 
-func IsValidSourceId(source_id int) bool {
+func IsValidSourceId(source_id int64) bool {
 
 	for _, details := range *specification {
 
@@ -68,6 +74,18 @@ func IsValidSourceId(source_id int) bool {
 	}
 
 	return false
+}
+
+func GetSourceByPrefix(source string) (*WOFSource, error) {
+
+	for _, details := range *specification {
+
+		if details.Prefix == source {
+			return &details, nil
+		}
+	}
+
+	return nil, errors.New("Invalid source")
 }
 
 func GetSourceByName(source string) (*WOFSource, error) {
@@ -82,7 +100,7 @@ func GetSourceByName(source string) (*WOFSource, error) {
 	return nil, errors.New("Invalid source")
 }
 
-func GetSourceById(source_id int) (*WOFSource, error) {
+func GetSourceById(source_id int64) (*WOFSource, error) {
 
 	for _, details := range *specification {
 
